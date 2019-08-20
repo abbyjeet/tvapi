@@ -1,0 +1,14 @@
+F:\projects\mycoreapitest1\bin\Debug\netcoreapp2.2\mycoreapitest1.deps.json
+F:\projects\mycoreapitest1\bin\Debug\netcoreapp2.2\mycoreapitest1.runtimeconfig.json
+F:\projects\mycoreapitest1\bin\Debug\netcoreapp2.2\mycoreapitest1.runtimeconfig.dev.json
+F:\projects\mycoreapitest1\bin\Debug\netcoreapp2.2\mycoreapitest1.dll
+F:\projects\mycoreapitest1\bin\Debug\netcoreapp2.2\mycoreapitest1.pdb
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.csprojAssemblyReference.cache
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.csproj.CoreCompileInputs.cache
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.RazorAssemblyInfo.cache
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.RazorAssemblyInfo.cs
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.AssemblyInfoInputs.cache
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.AssemblyInfo.cs
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.RazorTargetAssemblyInfo.cache
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.dll
+F:\projects\mycoreapitest1\obj\Debug\netcoreapp2.2\mycoreapitest1.pdb
