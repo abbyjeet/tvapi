@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AngleSharp;
+using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using tv.api.Sources;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace tv.api
 {
@@ -25,6 +29,19 @@ namespace tv.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Use the default configuration for AngleSharp
+            var config = AngleSharp.Configuration.Default;
+
+            //Create a new context for evaluating webpages with the given config
+            var context = BrowsingContext.New(config);
+
+            //Get Parser instance
+            var parser = context.GetService<IHtmlParser>();
+
+            //Register Parser instance for DI
+            services.AddScoped(p => parser);
+            services.AddScoped<ISource, df>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using AngleSharp;
 using AngleSharp.Html.Parser;
 using AngleSharp.Html.Dom;
+using tv.api.Sources;
 
 namespace tv.api.Controllers
 {
@@ -16,11 +17,42 @@ namespace tv.api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ISource df;
+
+        public ValuesController(ISource df)
+        {
+            this.df = df;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet("test/{id}")]
+        public JsonResult GetTest(int id)
+        {
+            if (id == 1)
+            {
+                return new JsonResult(df.GetChannels());
+            }
+            else if (id == 2)
+            {
+                return new JsonResult(df.GetShows("sdDates.php?ch=Zee-Marathi&link=L3plZS1tYXJhdGhpLw=="));
+            }
+            else if (id == 3)
+            {
+                return new JsonResult(df.GetEpisodes("sdTimeSlots.php?ch=zee-marathi&lang=marathi&sn=20-August-2019"));
+            }
+            else if (id == 4)
+            {
+                return new JsonResult(df.GetPlayData("sEmbed.php?ch=zee-marathi&link=aHR0cDovLzE0NC4yMDguODguMTk3OjgwMDAvaW5kL3ZpZGVvcy9NYXJhdGhpL1plZV9NYXJhdGhpLzIwLUF1Z3VzdC0yMDE5LygwNS0wMCUyMElTVCklMjBTd2FyYWp5YSUyMFJha3NoYWslMjBTYW1iaGFqaS5tcDQvcGxheWxpc3QubTN1OA==&title=(05-00%20IST)%20Swarajya%20Rakshak%20Sambhaji"));
+
+            }
+
+            return new JsonResult("Test");
         }
 
         // GET api/values/5
@@ -140,6 +172,23 @@ namespace tv.api.Controllers
                                };
 
                     return new JsonResult(test);
+                }
+                else if (id == 7)
+                {
+                    var htmlCode = client.DownloadString("https://www.viki.com/player5_fragment/1116533v.1116533v");
+
+                    //var document = parser.ParseDocument(htmlCode);
+
+                    //var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
+
+                    //var test = from node in list
+                    //           select new
+                    //           {
+                    //               name = (node.FirstElementChild as IHtmlAnchorElement).Title,
+                    //               href = (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")
+                    //           };
+
+                    return new JsonResult(htmlCode);
                 }
                 else
                 {
