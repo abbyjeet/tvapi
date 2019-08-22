@@ -17,8 +17,10 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace tv.api
 {
+    public delegate ISource SourceResolver(string key);
+
     public class Startup
-    {
+    {       
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -40,7 +42,26 @@ namespace tv.api
 
             //Register Parser instance for DI
             services.AddScoped(p => parser);
-            services.AddScoped<ISource, df>();
+
+            //source handlers
+            services.AddTransient<df>();
+            services.AddTransient<z5>();
+            services.AddTransient<vk>();
+
+            services.AddTransient<SourceResolver>(sourceProvider => key =>
+            {
+                switch (key)
+                {
+                    case "df":
+                        return sourceProvider.GetService<df>();
+                    case "z5":
+                        return sourceProvider.GetService<z5>();
+                    case "vk":
+                        return sourceProvider.GetService<vk>();
+                    default:
+                        throw new KeyNotFoundException($"Unknown source requested - {key}!");
+                }
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

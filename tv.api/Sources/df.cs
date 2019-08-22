@@ -15,8 +15,6 @@ namespace tv.api.Sources
     {
         private readonly IHtmlParser _parser;
 
-        private const string SHOWS = "sdDates.php?ch=Zee-Marathi&link=L3plZS1tYXJhdGhpLw==";
-
         public df(IHtmlParser parser)
         {
             this._parser = parser;
@@ -44,6 +42,28 @@ namespace tv.api.Sources
             }
         }
 
+
+        private TvData GetSource(string targetUrl = "")
+        {
+            using (WebClient client = new WebClient())
+            {
+                var raw = client.DownloadString(targetUrl);
+
+                var document = _parser.ParseDocument(raw);
+
+                var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
+
+                var shows = from node in list
+                            select new TvData
+                            {
+                                Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
+                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
+                            };
+
+                return shows.FirstOrDefault(s=>s.Name == "Source 2" || s.Name.Contains("2"));
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -53,7 +73,9 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(string.Concat(URL.DF, targetUrl));
+                var source2Url = GetSource(targetUrl);
+
+                var raw = client.DownloadString(source2Url.Link);
 
                 var document = _parser.ParseDocument(raw);
 
@@ -79,7 +101,7 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(string.Concat(URL.DF, targetUrl));
+                var raw = client.DownloadString(targetUrl);
 
                 var document = _parser.ParseDocument(raw);
 
@@ -106,7 +128,7 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(string.Concat(URL.DF, targetUrl));
+                var raw = client.DownloadString(targetUrl);
 
                 var document = _parser.ParseDocument(raw);
 
