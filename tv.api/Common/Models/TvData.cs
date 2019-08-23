@@ -7,8 +7,9 @@ namespace tv.api.Common.Models
 {
     public class TvData
     {
-        public string Name { get; set; }
-        public string Link { get; set; }
-        public string ImgSrc { get; set; }
+        public int Page { get; set; }
+        public int ItemsPerPage { get; set; }
+        public int TotalItems { get; set; }
+        public IEnumerable<TvDataItem> Items { get; set; }
     }
 }

@@ -22,10 +22,10 @@ namespace tv.api.Controllers
             //this.df = source("df");
         }
 
-        [HttpGet("{src}")]
-        public JsonResult GetChannels(string src)
+        [HttpGet("{src}/{encurl}")]
+        public JsonResult GetChannels(string src, string encurl)
         {
-            return new JsonResult(source(src).GetChannels());
+            return new JsonResult(source(src).GetChannels(WebUtility.UrlDecode(encurl)));
         }
 
         [HttpGet("{src}/s/{encurl}")]

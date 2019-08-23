@@ -8,9 +8,9 @@ namespace tv.api.Sources
 {
     public interface ISource
     {
-        IEnumerable<TvData> GetChannels();
-        IEnumerable<TvData> GetShows(string targetUrl = "");
-        IEnumerable<TvData> GetEpisodes(string targetUrl = "");
-        TvPlayData GetPlayData(string targetUrl = "");
+        TvData GetChannels(string pData = "");
+        TvData GetShows(string pData = "");
+        TvData GetEpisodes(string pData = "");
+        TvPlayData GetPlayData(string pData = "");
     }
 }

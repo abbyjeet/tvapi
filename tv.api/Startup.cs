@@ -61,7 +61,7 @@ namespace tv.api
                     default:
                         throw new KeyNotFoundException($"Unknown source requested - {key}!");
                 }
-            });
+            });                     
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -20,7 +20,7 @@ namespace tv.api.Sources
             this._parser = parser;
         }
 
-        public IEnumerable<TvData> GetChannels()
+        public TvData GetChannels(string pData)
         {
             using (WebClient client = new WebClient())
             {
@@ -31,30 +31,38 @@ namespace tv.api.Sources
                 var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
 
                 var channels = from node in list
-                           select new TvData
+                           select new TvDataItem
                            {
                                Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
                                ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                            };
 
-                return channels;
+                var tvData = new TvData
+                {
+                    Page=1,
+                    ItemsPerPage=9,
+                    TotalItems=9,               
+                    Items = channels
+                };
+
+                return tvData;
             }
         }
 
 
-        private TvData GetSource(string targetUrl = "")
+        private TvDataItem GetSource(string pData = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(targetUrl);
+                var raw = client.DownloadString(pData);
 
                 var document = _parser.ParseDocument(raw);
 
                 var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
 
                 var shows = from node in list
-                            select new TvData
+                            select new TvDataItem
                             {
                                 Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
                                 Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
@@ -69,11 +77,11 @@ namespace tv.api.Sources
         /// </summary>
         /// <param name="targetUrl">LIKE sdDates.php?ch=Zee-Marathi&link=L3plZS1tYXJhdGhpLw==</param>
         /// <returns></returns>
-        public IEnumerable<TvData> GetShows(string targetUrl = "")
+        public TvData GetShows(string pData = "")
         {
             using (WebClient client = new WebClient())
             {
-                var source2Url = GetSource(targetUrl);
+                var source2Url = GetSource(pData);
 
                 var raw = client.DownloadString(source2Url.Link);
 
@@ -82,13 +90,21 @@ namespace tv.api.Sources
                 var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
 
                 var shows = from node in list
-                           select new TvData
+                           select new TvDataItem
                            {
                                Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
                            };
 
-                return shows;
+                var tvData = new TvData
+                {
+                    Page = 1,
+                    ItemsPerPage = 9,
+                    TotalItems = 9,
+                    Items = shows
+                };
+
+                return tvData;
             }
         }
 
@@ -97,25 +113,33 @@ namespace tv.api.Sources
         /// </summary>
         /// <param name="targetUrl">LIKE sdTimeSlots.php?ch=zee-marathi&lang=marathi&sn=20-August-2019</param>
         /// <returns></returns>
-        public IEnumerable<TvData> GetEpisodes(string targetUrl = "")
+        public TvData GetEpisodes(string pData = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(targetUrl);
+                var raw = client.DownloadString(pData);
 
                 var document = _parser.ParseDocument(raw);
 
                 var list = document.QuerySelectorAll("#blogtile-left #portfolio .tile");
 
                 var episodes = from node in list
-                           select new TvData
+                           select new TvDataItem
                            {
                                Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
                                ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                            };
 
-                return episodes;
+                var tvData = new TvData
+                {
+                    Page = 1,
+                    ItemsPerPage = 9,
+                    TotalItems = 9,
+                    Items = episodes
+                };
+
+                return tvData;
             }
         }
 
@@ -124,11 +148,11 @@ namespace tv.api.Sources
         /// </summary>
         /// <param name="targetUrl">LIKE sEmbed.php?ch=zee-marathi&link=aHR0cDovLzE0NC4yMDguODguMTk3OjgwMDAvaW5kL3ZpZGVvcy9NYXJhdGhpL1plZV9NYXJhdGhpLzIwLUF1Z3VzdC0yMDE5LygwNS0wMCUyMElTVCklMjBTd2FyYWp5YSUyMFJha3NoYWslMjBTYW1iaGFqaS5tcDQvcGxheWxpc3QubTN1OA==&title=(05-00%20IST)%20Swarajya%20Rakshak%20Sambhaji</param>
         /// <returns></returns>
-        public TvPlayData GetPlayData(string targetUrl = "")
+        public TvPlayData GetPlayData(string pData = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(targetUrl);
+                var raw = client.DownloadString(pData);
 
                 var document = _parser.ParseDocument(raw);
 

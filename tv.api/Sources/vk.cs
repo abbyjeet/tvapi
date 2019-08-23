@@ -8,22 +8,22 @@ namespace tv.api.Sources
 {
     public class vk : ISource
     {
-        public IEnumerable<TvData> GetChannels()
+        public TvData GetChannels(string pData = "")
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TvData> GetEpisodes(string targetUrl = "")
+        public TvData GetEpisodes(string pData = "")
         {
             throw new NotImplementedException();
         }
 
-        public TvPlayData GetPlayData(string targetUrl = "")
+        public TvPlayData GetPlayData(string pData = "")
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TvData> GetShows(string targetUrl = "")
+        public TvData GetShows(string pData = "")
         {
             throw new NotImplementedException();
         }
