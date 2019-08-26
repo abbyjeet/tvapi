@@ -8,9 +8,9 @@ namespace tv.api.Sources
 {
     public interface ISource
     {
-        TvData GetChannels(string pData = "");
-        TvData GetShows(string pData = "");
-        TvData GetEpisodes(string pData = "");
-        TvPlayData GetPlayData(string pData = "");
+        TvData GetChannels(string query = "");
+        TvData GetShows(string query = "");
+        TvData GetEpisodes(string query = "");
+        TvPlayData GetPlayData(string query = "");
     }
 }

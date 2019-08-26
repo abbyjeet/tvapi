@@ -9,11 +9,11 @@ using tv.api.Common.Models;
 
 namespace tv.api.Sources
 {
-    public class z5 : ISource
+    public class Z5 : ISource
     {
         private readonly string collectionId;
 
-        public z5()
+        public Z5()
         {
             using (WebClient client = new WebClient())
             {
@@ -25,7 +25,7 @@ namespace tv.api.Sources
             }
         }
 
-        public TvData GetChannels(string pData = "")
+        public TvData GetChannels(string query = "")
         {
             var shows = new TvDataItem[] { new TvDataItem
                 {
@@ -43,11 +43,11 @@ namespace tv.api.Sources
             };
         }
 
-        public TvData GetShows(string pData = "asset_subtype=tvshow&languages=mr&page=1&page_size=9")
+        public TvData GetShows(string query = "asset_subtype=tvshow&languages=mr&page=1&page_size=9")
         {
             using (WebClient client = new WebClient())
             {
-                var rawJson = client.DownloadString(Z5api.ApiListShows(pData));
+                var rawJson = client.DownloadString(Z5api.ApiListShows(query));
 
                 JObject jsonData = JObject.Parse(rawJson);
 
@@ -68,11 +68,11 @@ namespace tv.api.Sources
             }
         }
 
-        public TvData GetEpisodes(string pData = "page=1&page_size=9&asset_subtype=episode")
+        public TvData GetEpisodes(string query = "page=1&page_size=9&asset_subtype=episode")
         {
             using (WebClient client = new WebClient())
             {
-                var rawJson = client.DownloadString(Z5api.ApiShowDetails(pData));
+                var rawJson = client.DownloadString(Z5api.ApiShowDetails(query));
 
                 JObject showDetails = JObject.Parse(rawJson);
 
@@ -81,7 +81,7 @@ namespace tv.api.Sources
 
                 var latestSeasonId = seasons[seasons.Length - 1]["id"].ToObject<string>();
 
-                rawJson = client.DownloadString(Z5api.ApiEpisodesForSeason(latestSeasonId, pData));
+                rawJson = client.DownloadString(Z5api.ApiEpisodesForSeason(latestSeasonId, query));
 
                 JObject jsonData = JObject.Parse(rawJson);
 
@@ -102,11 +102,11 @@ namespace tv.api.Sources
             }
         }
 
-        public TvPlayData GetPlayData(string pData = "")
+        public TvPlayData GetPlayData(string query = "")
         {
             using (WebClient client = new WebClient())
             {   
-                var rawJson = client.DownloadString(Z5api.ApiEpisodeById(pData));
+                var rawJson = client.DownloadString(Z5api.ApiEpisodeById(query));
 
                 JObject jsonData = JObject.Parse(rawJson);
 

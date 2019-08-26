@@ -27,11 +27,11 @@ namespace tv.api.Common.Constants
         //public static string ApiManualCollection(string collectionId) => $"https://gwapi.zee5.com/content/collection/{collectionId}?page=1&limit=5&item_limit=20&country=AU&translation=en&languages=mr&version=6";
 
         //asset_subtype=tvshow&languages=mr&page=1&page_size=9
-        public static string ApiListShows(string pData) => $"https://catalogapi.zee5.com/v1/tvshow?sort_by_field=release_date&sort_order=DESC&genres=Action,Animation,Comedy,Cookery,Crime,Devotional,Docudrama,Drama,Entertainment,Fantasy,Horror,Infotainment,Kids,Lifestyle,Mystery,News,Reality,Romance,Sci-Fi%20%26%20Fantasy,Thriller,Wellness&country=AU&translation=en&{pData}";
+        public static string ApiListShows(string query) => $"https://catalogapi.zee5.com/v1/tvshow?sort_by_field=release_date&sort_order=DESC&genres=Action,Animation,Comedy,Cookery,Crime,Devotional,Docudrama,Drama,Entertainment,Fantasy,Horror,Infotainment,Kids,Lifestyle,Mystery,News,Reality,Romance,Sci-Fi%20%26%20Fantasy,Thriller,Wellness&country=AU&translation=en&{query}";
         public static string ApiShowDetails(string showId) => $"https://catalogapi.zee5.com/v1/tvshow/{showId}";
 
         //page=1&page_size=9&asset_subtype=episode
-        public static string ApiEpisodesForSeason(string seasonId, string pData) => $"https://catalogapi.zee5.com/v1/season/{seasonId}?{pData}";
+        public static string ApiEpisodesForSeason(string seasonId, string query) => $"https://catalogapi.zee5.com/v1/season/{seasonId}?{query}";
 
         public static string ApiEpisodeById(string episodeId) => $"https://catalogapi.zee5.com/v1/episode/{episodeId}";
     }

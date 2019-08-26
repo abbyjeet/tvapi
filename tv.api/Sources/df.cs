@@ -11,16 +11,16 @@ using tv.api.Common.Models;
 
 namespace tv.api.Sources
 {
-    public class df : ISource
+    public class DF : ISource
     {
         private readonly IHtmlParser _parser;
 
-        public df(IHtmlParser parser)
+        public DF(IHtmlParser parser)
         {
             this._parser = parser;
         }
 
-        public TvData GetChannels(string pData)
+        public TvData GetChannels(string query)
         {
             using (WebClient client = new WebClient())
             {
@@ -51,11 +51,11 @@ namespace tv.api.Sources
         }
 
 
-        private TvDataItem GetSource(string pData = "")
+        private TvDataItem GetSource(string query = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(pData);
+                var raw = client.DownloadString(query);
 
                 var document = _parser.ParseDocument(raw);
 
@@ -77,11 +77,11 @@ namespace tv.api.Sources
         /// </summary>
         /// <param name="targetUrl">LIKE sdDates.php?ch=Zee-Marathi&link=L3plZS1tYXJhdGhpLw==</param>
         /// <returns></returns>
-        public TvData GetShows(string pData = "")
+        public TvData GetShows(string query = "")
         {
             using (WebClient client = new WebClient())
             {
-                var source2Url = GetSource(pData);
+                var source2Url = GetSource(query);
 
                 var raw = client.DownloadString(source2Url.Link);
 
@@ -113,11 +113,11 @@ namespace tv.api.Sources
         /// </summary>
         /// <param name="targetUrl">LIKE sdTimeSlots.php?ch=zee-marathi&lang=marathi&sn=20-August-2019</param>
         /// <returns></returns>
-        public TvData GetEpisodes(string pData = "")
+        public TvData GetEpisodes(string query = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(pData);
+                var raw = client.DownloadString(query);
 
                 var document = _parser.ParseDocument(raw);
 
@@ -148,11 +148,11 @@ namespace tv.api.Sources
         /// </summary>
         /// <param name="targetUrl">LIKE sEmbed.php?ch=zee-marathi&link=aHR0cDovLzE0NC4yMDguODguMTk3OjgwMDAvaW5kL3ZpZGVvcy9NYXJhdGhpL1plZV9NYXJhdGhpLzIwLUF1Z3VzdC0yMDE5LygwNS0wMCUyMElTVCklMjBTd2FyYWp5YSUyMFJha3NoYWslMjBTYW1iaGFqaS5tcDQvcGxheWxpc3QubTN1OA==&title=(05-00%20IST)%20Swarajya%20Rakshak%20Sambhaji</param>
         /// <returns></returns>
-        public TvPlayData GetPlayData(string pData = "")
+        public TvPlayData GetPlayData(string query = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(pData);
+                var raw = client.DownloadString(query);
 
                 var document = _parser.ParseDocument(raw);
 

@@ -44,20 +44,20 @@ namespace tv.api
             services.AddScoped(p => parser);
 
             //source handlers
-            services.AddTransient<df>();
-            services.AddTransient<z5>();
-            services.AddTransient<vk>();
+            services.AddTransient<DF>();
+            services.AddTransient<Z5>();
+            services.AddTransient<VK>();
 
             services.AddTransient<SourceResolver>(sourceProvider => key =>
             {
                 switch (key)
                 {
                     case "df":
-                        return sourceProvider.GetService<df>();
+                        return sourceProvider.GetService<DF>();
                     case "z5":
-                        return sourceProvider.GetService<z5>();
+                        return sourceProvider.GetService<Z5>();
                     case "vk":
-                        return sourceProvider.GetService<vk>();
+                        return sourceProvider.GetService<VK>();
                     default:
                         throw new KeyNotFoundException($"Unknown source requested - {key}!");
                 }
