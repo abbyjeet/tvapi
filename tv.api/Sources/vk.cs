@@ -157,5 +157,22 @@ namespace tv.api.Sources
                 return playData;
             }
         }
+
+        public TvData GetSource(string query = "")
+        {
+            return new TvData
+            {
+                Page = 0,
+                ItemsPerPage = 0,
+                TotalItems = 0,
+                Items = new[]
+                {
+                    new TvDataItem
+                    {
+                        Name = "Not Applicable"
+                    }
+                }
+            };
+        }
     }
 }

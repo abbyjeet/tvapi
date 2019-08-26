@@ -28,6 +28,12 @@ namespace tv.api.Controllers
             return new JsonResult(source(src).GetChannels(WebUtility.UrlDecode(encurl)));
         }
 
+        [HttpGet("{src}/c/{encurl}")]
+        public JsonResult GetSource(string src, string encurl)
+        {
+            return new JsonResult(source(src).GetSource(WebUtility.UrlDecode(encurl)));
+        }
+
         [HttpGet("{src}/s/{encurl}")]
         public JsonResult GetShows(string src, string encurl)
         {

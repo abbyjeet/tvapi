@@ -31,18 +31,18 @@ namespace tv.api.Sources
                 var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
 
                 var channels = from node in list
-                           select new TvDataItem
-                           {
-                               Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                               Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
-                               ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
-                           };
+                               select new TvDataItem
+                               {
+                                   Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
+                                   Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
+                                   ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
+                               };
 
                 var tvData = new TvData
                 {
-                    Page=1,
-                    ItemsPerPage=9,
-                    TotalItems=9,               
+                    Page = 1,
+                    ItemsPerPage = 9,
+                    TotalItems = 9,
                     Items = channels
                 };
 
@@ -51,7 +51,7 @@ namespace tv.api.Sources
         }
 
 
-        private TvDataItem GetSource(string query = "")
+        public TvData GetSource(string query = "")
         {
             using (WebClient client = new WebClient())
             {
@@ -68,7 +68,17 @@ namespace tv.api.Sources
                                 Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
                             };
 
-                return shows.FirstOrDefault(s=>s.Name == "Source 2" || s.Name.Contains("2"));
+                var count = shows.Count();
+
+                var tvData = new TvData
+                {
+                    Page = 1,
+                    ItemsPerPage = count,
+                    TotalItems = count,
+                    Items = shows
+                };
+
+                return tvData; //.FirstOrDefault(s=>s.Name == "Source 2" || s.Name.Contains("2"));
             }
         }
 
@@ -81,20 +91,20 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var source2Url = GetSource(query);
+                //var source2Url = GetSource(query);
 
-                var raw = client.DownloadString(source2Url.Link);
+                var raw = client.DownloadString(query);
 
                 var document = _parser.ParseDocument(raw);
 
                 var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
 
                 var shows = from node in list
-                           select new TvDataItem
-                           {
-                               Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                               Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
-                           };
+                            select new TvDataItem
+                            {
+                                Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
+                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
+                            };
 
                 var tvData = new TvData
                 {
@@ -124,12 +134,12 @@ namespace tv.api.Sources
                 var list = document.QuerySelectorAll("#blogtile-left #portfolio .tile");
 
                 var episodes = from node in list
-                           select new TvDataItem
-                           {
-                               Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                               Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
-                               ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
-                           };
+                               select new TvDataItem
+                               {
+                                   Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
+                                   Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
+                                   ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
+                               };
 
                 var tvData = new TvData
                 {
@@ -158,7 +168,7 @@ namespace tv.api.Sources
 
                 var title = document.QuerySelector("#content-title");
                 var node = document.QuerySelector("video");
-                
+
                 var playData = new TvPlayData
                 {
                     Name = title.TextContent.Trim(),

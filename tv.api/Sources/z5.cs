@@ -27,10 +27,21 @@ namespace tv.api.Sources
 
         public TvData GetChannels(string query = "")
         {
-            var shows = new TvDataItem[] { new TvDataItem
+            var shows = new TvDataItem[] {
+                new TvDataItem
                 {
                     Name ="Marathi",
                     Link = "mr"
+                },
+                new TvDataItem
+                {
+                    Name ="Hindi",
+                    Link = "hi"
+                },
+                new TvDataItem
+                {
+                    Name ="English",
+                    Link = "en"
                 }
             };
 
@@ -105,7 +116,7 @@ namespace tv.api.Sources
         public TvPlayData GetPlayData(string query = "")
         {
             using (WebClient client = new WebClient())
-            {   
+            {
                 var rawJson = client.DownloadString(Z5api.ApiEpisodeById(query));
 
                 JObject jsonData = JObject.Parse(rawJson);
@@ -127,7 +138,7 @@ namespace tv.api.Sources
                         new StreamLink
                         {
                             Type = "application/dash+xml",
-                            Link = dashUrl                            
+                            Link = dashUrl
                         },
                         new StreamLink
                         {
@@ -141,6 +152,21 @@ namespace tv.api.Sources
             }
         }
 
-
+        public TvData GetSource(string query = "")
+        {
+            return new TvData
+            {
+                Page = 0,
+                ItemsPerPage = 0,
+                TotalItems = 0,
+                Items = new[]
+                {
+                    new TvDataItem
+                    {
+                        Name = "Not Applicable"
+                    }
+                }
+            };
+        }
     }
 }
