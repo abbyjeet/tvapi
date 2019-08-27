@@ -23,6 +23,8 @@ namespace tv.api.Common.Constants
     public static class Z5api
     {
         public const string REGIONAL_DETAILS = "https://b2bapi.zee5.com/front/countrylist.php?lang=en&ccode=AU";
+        public const string AKAMAI_URL = "https://zee5vodnd.akamaized.net/";
+        
 
         //public static string ApiManualCollection(string collectionId) => $"https://gwapi.zee5.com/content/collection/{collectionId}?page=1&limit=5&item_limit=20&country=AU&translation=en&languages=mr&version=6";
 

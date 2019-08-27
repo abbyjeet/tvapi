@@ -12,7 +12,7 @@ namespace tv.api.Sources
     public class Z5 : ISource
     {
         private readonly string collectionId;
-
+        
         public Z5()
         {
             using (WebClient client = new WebClient())
@@ -138,12 +138,12 @@ namespace tv.api.Sources
                         new StreamLink
                         {
                             Type = "application/dash+xml",
-                            Link = dashUrl
+                            Link = string.Concat(Z5api.AKAMAI_URL, dashUrl)
                         },
                         new StreamLink
                         {
                             Type = "application/x-mpegURL",
-                            Link = hlsUrl
+                            Link = string.Concat(Z5api.AKAMAI_URL, hlsUrl)
                         }
                     },
                 };
