@@ -125,7 +125,7 @@ namespace tv.api.Sources
                 var image = jsonData["list_image"].ToObject<string>();
 
                 var dashUrl = jsonData["video"]["url"].ToObject<string>();
-                var hlsUrl = jsonData["video"]["url"].ToObject<string>();
+                var hlsUrl = jsonData["video"]["hls_url"].ToObject<string>();
                 var isDrm = jsonData["video"]["is_drm"].ToObject<string>();
                 var drmKey = jsonData["video"]["drm_key_id"].ToObject<string>();
 
