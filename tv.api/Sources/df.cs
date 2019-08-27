@@ -1,6 +1,8 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,25 @@ namespace tv.api.Sources
     public class DF : ISource
     {
         private readonly IHtmlParser _parser;
+
+        private static string LinkToQueryString(IHtmlAnchorElement linkEl)
+        {
+            //return string.Join("|", QueryHelpers.ParseQuery(queryString).Select(x => x.Key + "=" + x.Value).ToArray());
+            var querystring = linkEl.Search.Replace("?", "").Replace("&", "|");
+
+            return $"{linkEl.PathName.Substring(1)};{querystring}";
+        }
+
+        private static string QueryStringToFullPath(string listString)
+        {
+            var arr = listString.Split(';');
+
+            var path = arr[0];
+            var query = arr[1];
+
+            return $"{URL.DF}{path}?{query.Replace("|","&")}";
+        }
+
 
         public DF(IHtmlParser parser)
         {
@@ -34,7 +55,7 @@ namespace tv.api.Sources
                                select new TvDataItem
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                   Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
+                                   Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
@@ -51,21 +72,25 @@ namespace tv.api.Sources
         }
 
 
+
         public TvData GetSource(string query = "")
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(query);
+                var raw = client.DownloadString(QueryStringToFullPath(query));
 
                 var document = _parser.ParseDocument(raw);
 
                 var list = document.QuerySelectorAll("#blogtile-left #blogs .tile");
 
+                //QueryHelpers.ParseQuery(query)
+                //string s = string.Join(";", myDict.Select(x => x.Key + "=" + x.Value).ToArray());
+
                 var shows = from node in list
                             select new TvDataItem
                             {
                                 Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
+                                Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                             };
 
                 var count = shows.Count();
@@ -93,7 +118,7 @@ namespace tv.api.Sources
             {
                 //var source2Url = GetSource(query);
 
-                var raw = client.DownloadString(query);
+                var raw = client.DownloadString(QueryStringToFullPath(query));
 
                 var document = _parser.ParseDocument(raw);
 
@@ -103,7 +128,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", ""))
+                                Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                             };
 
                 var tvData = new TvData
@@ -127,7 +152,7 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(query);
+                var raw = client.DownloadString(QueryStringToFullPath(query));
 
                 var document = _parser.ParseDocument(raw);
 
@@ -137,7 +162,7 @@ namespace tv.api.Sources
                                select new TvDataItem
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                   Link = string.Concat(URL.DF, (node.FirstElementChild as IHtmlAnchorElement).Href.Replace("about:///", "")),
+                                   Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
@@ -162,7 +187,7 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var raw = client.DownloadString(query);
+                var raw = client.DownloadString(QueryStringToFullPath(query));
 
                 var document = _parser.ParseDocument(raw);
 
