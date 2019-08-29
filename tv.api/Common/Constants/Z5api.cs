@@ -24,6 +24,7 @@ namespace tv.api.Common.Constants
     {
         public const string REGIONAL_DETAILS = "https://b2bapi.zee5.com/front/countrylist.php?lang=en&ccode=AU";
         public const string AKAMAI_URL = "https://zee5vodnd.akamaized.net";
+        public const string VIDEO_TOKEN = "https://useraction.zee5.com/tokennd/";        
         
 
         //public static string ApiManualCollection(string collectionId) => $"https://gwapi.zee5.com/content/collection/{collectionId}?page=1&limit=5&item_limit=20&country=AU&translation=en&languages=mr&version=6";
@@ -33,8 +34,15 @@ namespace tv.api.Common.Constants
         public static string ApiShowDetails(string showId) => $"https://catalogapi.zee5.com/v1/tvshow/{showId}";
 
         //page=1&page_size=9&asset_subtype=episode
-        public static string ApiEpisodesForSeason(string seasonId, string query) => $"https://catalogapi.zee5.com/v1/season/{seasonId}?{query}";
+        //public static string ApiEpisodesForSeason(string seasonId, string query) => $"https://catalogapi.zee5.com/v1/season/{seasonId}?{query}";
+        public static string ApiEpisodesForShow(string showId) => $"https://gwapi.zee5.com/content/tvshow/{showId}?translation=en&country=AU";
 
-        public static string ApiEpisodeById(string episodeId) => $"https://catalogapi.zee5.com/v1/episode/{episodeId}";
+        //Not seamless but webisode - doesn't work
+        //public static string ApiEpisodeById(string episodeId) => $"https://catalogapi.zee5.com/v1/episode/{episodeId}";
+
+        //seamless and works
+        //public static string ApiEpisodeById(string episodeId) => $"https://gwapi.zee5.com/content/details/{episodeId}?translation=en&country=AU";
+        //public static string ApiEpisodeById(string showId) => $"https://gwapi.zee5.com/content/tvshow/{showId}?translation=en&country=AU";
+
     }
 }
