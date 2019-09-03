@@ -19,28 +19,33 @@ namespace tv.api.Sources
                 new TvDataItem
                 {
                     Name ="Korean",
-                    Link = "kr"
+                    ImgSrc = "kr",
+                    Link="s/origin_country=kr&page=1"
                 },
                 new TvDataItem
                 {
                     Name ="Japanese",
-                    Link = "jp"
+                    ImgSrc = "jp",
+                    Link="s/origin_country=jp&page=1"
                 },
                 new TvDataItem
                 {
                     Name ="Chinese",
-                    Link = "cn"
+                    ImgSrc = "cn",
+                    Link="s/origin_country=cn&page=1"
                 },
                 new TvDataItem
                 {
                     Name ="Taiwan",
-                    Link = "tw"
+                    ImgSrc = "tw",
+                    Link="s/origin_country=tw&page=1"
                 }
                 ,
                 new TvDataItem
                 {
                     Name ="India",
-                    Link = "in"
+                    ImgSrc = "in",
+                    Link="s/origin_country=in&page=1"
                 }
             };
 

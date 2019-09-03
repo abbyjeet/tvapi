@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using tv.api.Common.Constants;
 using tv.api.Sources;
 
 namespace tv.api.Controllers
@@ -13,22 +14,27 @@ namespace tv.api.Controllers
     [ApiController]
     public class ApiController : ControllerBase
     {
-        //private readonly ISource df;
         private readonly SourceResolver source;
 
         public ApiController(SourceResolver source)
         {
             this.source = source;
-            //this.df = source("df");
         }
 
-        [HttpGet("{src}/{encurl}")]
-        public JsonResult GetChannels(string src, string encurl)
+
+        [HttpGet]
+        public JsonResult GetSources()
+        {
+            return new JsonResult(Misc.Sources);
+        }
+
+        [HttpGet("{src}/{encurl?}")]
+        public JsonResult GetChannels(string src, string encurl = "")
         {
             return new JsonResult(source(src).GetChannels(HttpUtility.UrlDecode(encurl)));
         }
 
-        [HttpGet("{src}/c/{encurl}")]
+        [HttpGet("{src}/c/{encurl?}")]
         public JsonResult GetSource(string src, string encurl)
         {
             return new JsonResult(source(src).GetSource(HttpUtility.UrlDecode(encurl)));

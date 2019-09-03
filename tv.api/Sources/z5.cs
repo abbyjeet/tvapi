@@ -31,17 +31,20 @@ namespace tv.api.Sources
                 new TvDataItem
                 {
                     Name ="Marathi",
-                    Link = "mr"
+                    ImgSrc="mr",
+                    Link = "s/asset_subtype=tvshow&languages=mr&page=1&page_size=9"
                 },
                 new TvDataItem
                 {
                     Name ="Hindi",
-                    Link = "hi"
+                    ImgSrc="hi",
+                    Link = "s/asset_subtype=tvshow&languages=hi&page=1&page_size=9"
                 },
                 new TvDataItem
                 {
                     Name ="English",
-                    Link = "en"
+                    ImgSrc="en",
+                    Link = "s/asset_subtype=tvshow&languages=en&page=1&page_size=9"
                 }
             };
 
