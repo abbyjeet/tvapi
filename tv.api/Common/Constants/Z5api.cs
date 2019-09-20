@@ -30,8 +30,9 @@ namespace tv.api.Common.Constants
     {
         public const string REGIONAL_DETAILS = "https://b2bapi.zee5.com/front/countrylist.php?lang=en&ccode=AU";
         public const string AKAMAI_URL = "https://zee5vodnd.akamaized.net";
-        public const string VIDEO_TOKEN = "https://useraction.zee5.com/tokennd/";        
-        
+        public const string VIDEO_TOKEN = "https://useraction.zee5.com/tokennd/";
+        public const string PLATFORM_TOKEN = "https://useraction.zee5.com/token/platform_tokens.php?platform_name=web_app";
+
 
         //public static string ApiManualCollection(string collectionId) => $"https://gwapi.zee5.com/content/collection/{collectionId}?page=1&limit=5&item_limit=20&country=AU&translation=en&languages=mr&version=6";
 

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -22,6 +23,29 @@ namespace tv.api.Sources
                 dynamic jsonData = JArray.Parse(rawJson);
 
                 collectionId = jsonData[0].collections.web_app.tvshows;
+            }
+        }
+
+        private NameValueCollection GetRequestHeaders()
+        {
+            using (WebClient client = new WebClient())
+            {
+                var rawJson = client.DownloadString(Z5api.PLATFORM_TOKEN);
+                JObject jsonData = JObject.Parse(rawJson);
+                var xAccessToken = jsonData["token"].ToObject<string>();
+
+                return new NameValueCollection
+                {
+                    //{ "Origin", "https://www.zee5.com" },
+                    { "User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.80 Safari/537.36" },
+                    //{ "Accept", "*/*" },
+                    { "Referer", "https://www.zee5.com" },
+                    //{ "Accept-Encoding", "gzip, deflate, br" },
+                    //{ "Accept-Language", "en-US,en;q=0.9" },
+                    { "Accept", "application/json, text/plain, */*" },
+                    //{ "Accept-Language", "en-US,en;q=0.9" },
+                    { "X-ACCESS-TOKEN", xAccessToken }                    
+                };
             }
         }
 
@@ -61,8 +85,10 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var rawJson = client.DownloadString(Z5api.ApiListShows(query));
+                //client.Headers.Add(GetRequestHeaders());
 
+                var rawJson = client.DownloadString(Z5api.ApiListShows(query));
+                
                 JObject jsonData = JObject.Parse(rawJson);
 
                 var shows = from item in jsonData["items"]
@@ -95,6 +121,10 @@ namespace tv.api.Sources
 
                 //var latestSeasonId = seasons[seasons.Length - 1]["id"].ToObject<string>();
 
+
+                // gwapi requires platform token
+                client.Headers.Add(GetRequestHeaders());                               
+
                 var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(query));
 
                 JObject jsonData = JObject.Parse(rawJson);
@@ -105,7 +135,7 @@ namespace tv.api.Sources
                 var shows = from item in jsonData["seasons"][0]["episodes"]
                             select new TvDataItem
                             {
-                                Name = title,
+                                Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
                                 Link = string.Concat(showId, "|", item["id"].ToObject<string>()),
                                 ImgSrc = item["image_url"].ToObject<string>()
                             };

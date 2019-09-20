@@ -116,9 +116,10 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                //var source2Url = GetSource(query);
+                var source2 = GetSource(query).Items.FirstOrDefault(s => s.Name == "Source 2" || s.Name.Contains("2"));
+                var source2Url = source2.Link;
 
-                var raw = client.DownloadString(QueryStringToFullPath(query));
+                var raw = client.DownloadString(QueryStringToFullPath(source2Url));
 
                 var document = _parser.ParseDocument(raw);
 
