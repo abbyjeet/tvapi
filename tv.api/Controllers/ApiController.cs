@@ -28,24 +28,48 @@ namespace tv.api.Controllers
             return new JsonResult(Misc.Sources);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="encurl">optional - nothing by default</param>
+        /// <returns></returns>
         [HttpGet("{src}/{encurl?}")]
         public JsonResult GetChannels(string src, string encurl = "")
         {
             return new JsonResult(source(src).GetChannels(HttpUtility.UrlDecode(encurl)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="encurl"></param>
+        /// <returns></returns>
         [HttpGet("{src}/c/{encurl?}")]
         public JsonResult GetSource(string src, string encurl)
         {
             return new JsonResult(source(src).GetSource(HttpUtility.UrlDecode(encurl)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="encurl">{link}&p={page}</param>
+        /// <returns></returns>
         [HttpGet("{src}/s/{encurl}")]
         public JsonResult GetShows(string src, string encurl)
         {
             return new JsonResult(source(src).GetShows(HttpUtility.UrlDecode(encurl)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="encurl">{link}&p={page}</param>
+        /// <returns></returns>
         [HttpGet("{src}/e/{encurl}")]
         public JsonResult GetEpisodes(string src, string encurl)
         {

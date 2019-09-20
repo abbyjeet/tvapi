@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -56,19 +57,19 @@ namespace tv.api.Sources
                 {
                     Name ="Marathi",
                     ImgSrc="mr",
-                    Link = "s/asset_subtype=tvshow&languages=mr&page=1&page_size=9"
+                    Link = "s/l=mr&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Hindi",
                     ImgSrc="hi",
-                    Link = "s/asset_subtype=tvshow&languages=hi&page=1&page_size=9"
+                    Link = "s/l=hi&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="English",
                     ImgSrc="en",
-                    Link = "s/asset_subtype=tvshow&languages=en&page=1&page_size=9"
+                    Link = "s/l=en&p=1"
                 }
             };
 
@@ -81,13 +82,17 @@ namespace tv.api.Sources
             };
         }
 
-        public TvData GetShows(string query = "asset_subtype=tvshow&languages=mr&page=1&page_size=9")
+        public TvData GetShows(string query = "l=mr&p=1")
         {
             using (WebClient client = new WebClient())
             {
                 //client.Headers.Add(GetRequestHeaders());
 
-                var rawJson = client.DownloadString(Z5api.ApiListShows(query));
+                var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
+                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
+                var param = $"asset_subtype=tvshow&languages={lang}&page={page}&page_size={Misc.PAGESIZE}";
+
+                var rawJson = client.DownloadString(Z5api.ApiListShows(param));
                 
                 JObject jsonData = JObject.Parse(rawJson);
 
@@ -108,7 +113,7 @@ namespace tv.api.Sources
             }
         }
 
-        public TvData GetEpisodes(string query = "page=1&page_size=9&asset_subtype=episode")
+        public TvData GetEpisodes(string query = "p=1")
         {
             using (WebClient client = new WebClient())
             {
@@ -123,9 +128,13 @@ namespace tv.api.Sources
 
 
                 // gwapi requires platform token
-                client.Headers.Add(GetRequestHeaders());                               
+                client.Headers.Add(GetRequestHeaders());
 
-                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(query));
+                //var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
+                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
+                var param = $"asset_subtype=episode&page={page}&page_size={Misc.PAGESIZE}";
+
+                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(param));
 
                 JObject jsonData = JObject.Parse(rawJson);
 

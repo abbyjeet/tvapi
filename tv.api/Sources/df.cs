@@ -38,7 +38,7 @@ namespace tv.api.Sources
 
         public DF(IHtmlParser parser)
         {
-            this._parser = parser;
+            _parser = parser;
         }
 
         public TvData GetChannels(string query)
@@ -59,11 +59,13 @@ namespace tv.api.Sources
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
+                var count = channels.Count();
+
                 var tvData = new TvData
                 {
                     Page = 1,
-                    ItemsPerPage = 9,
-                    TotalItems = 9,
+                    ItemsPerPage = count,
+                    TotalItems = count,
                     Items = channels
                 };
 
@@ -72,7 +74,11 @@ namespace tv.api.Sources
         }
 
 
-
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public TvData GetSource(string query = "")
         {
             using (WebClient client = new WebClient())
@@ -86,21 +92,21 @@ namespace tv.api.Sources
                 //QueryHelpers.ParseQuery(query)
                 //string s = string.Join(";", myDict.Select(x => x.Key + "=" + x.Value).ToArray());
 
-                var shows = from node in list
+                var sources = from node in list
                             select new TvDataItem
                             {
                                 Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
                                 Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                             };
 
-                var count = shows.Count();
+                var count = sources.Count();
 
                 var tvData = new TvData
                 {
                     Page = 1,
                     ItemsPerPage = count,
                     TotalItems = count,
-                    Items = shows
+                    Items = sources
                 };
 
                 return tvData; //.FirstOrDefault(s=>s.Name == "Source 2" || s.Name.Contains("2"));
@@ -116,10 +122,29 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var source2 = GetSource(query).Items.FirstOrDefault(s => s.Name == "Source 2" || s.Name.Contains("2"));
-                var source2Url = source2.Link;
+                var sources = GetSource(query).Items;
 
-                var raw = client.DownloadString(QueryStringToFullPath(source2Url));
+                var source = sources.FirstOrDefault(s => s.Link.Contains("Dates.php"));
+                if (source == null)
+                {
+                    source = sources.FirstOrDefault(s => s.Name == "Source 2" || s.Name.Contains("2"));
+
+                    if (source == null)
+                    {
+                        source = sources.FirstOrDefault(s => s.Name == "Source 1" || s.Name.Contains("1"));
+
+                        if (source == null)
+                        {
+                            source = sources.FirstOrDefault();
+                        }
+                    }
+                }
+
+                var sourceUrl = source.Link;
+
+
+
+                var raw = client.DownloadString(QueryStringToFullPath(sourceUrl));
 
                 var document = _parser.ParseDocument(raw);
 
@@ -132,11 +157,13 @@ namespace tv.api.Sources
                                 Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                             };
 
+                var count = shows.Count();
+
                 var tvData = new TvData
                 {
                     Page = 1,
-                    ItemsPerPage = 9,
-                    TotalItems = 9,
+                    ItemsPerPage = count,
+                    TotalItems = count,
                     Items = shows
                 };
 
@@ -167,11 +194,13 @@ namespace tv.api.Sources
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
+                var count = episodes.Count();
+
                 var tvData = new TvData
                 {
                     Page = 1,
-                    ItemsPerPage = 9,
-                    TotalItems = 9,
+                    ItemsPerPage = count,
+                    TotalItems = count,
                     Items = episodes
                 };
 

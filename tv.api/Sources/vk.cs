@@ -20,32 +20,32 @@ namespace tv.api.Sources
                 {
                     Name ="Korean",
                     ImgSrc = "kr",
-                    Link="s/origin_country=kr&page=1"
+                    Link="s/l=kr&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Japanese",
                     ImgSrc = "jp",
-                    Link="s/origin_country=jp&page=1"
+                    Link="s/l=jp&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Chinese",
                     ImgSrc = "cn",
-                    Link="s/origin_country=cn&page=1"
+                    Link="s/l=cn&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Taiwan",
                     ImgSrc = "tw",
-                    Link="s/origin_country=tw&page=1"
+                    Link="s/l=tw&p=1"
                 }
                 ,
                 new TvDataItem
                 {
                     Name ="India",
                     ImgSrc = "in",
-                    Link="s/origin_country=in&page=1"
+                    Link="s/l=in&p=1"
                 }
             };
 
@@ -58,17 +58,21 @@ namespace tv.api.Sources
             };
         }
 
-        public TvData GetShows(string query = "origin_country=kr&page=1")
+        public TvData GetShows(string query = "l=kr&p=1")
         {
             using (WebClient client = new WebClient())
             {
-                var getQuery = $"{VKapi.ApiListShows(query)}&sort=views_recent&per_page={Misc.PAGESIZE}&with_paging=true";
+                var lang = int.Parse(QueryHelpers.ParseQuery(query)["l"]);
+                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
+                var param = $"origin_country={lang}&page={page}";
+
+                var getQuery = $"{VKapi.ApiListShows(param)}&sort=views_recent&per_page={Misc.PAGESIZE}&with_paging=true";
 
                 var rawJson = client.DownloadString(getQuery);
 
                 JObject jsonData = JObject.Parse(rawJson);
 
-                var currentPage = int.Parse(QueryHelpers.ParseQuery(query)["page"]);
+                
                 var totalItems = jsonData["count"].ToObject<int>();
                 //var totalPages = totalItems / 9;
 
@@ -81,7 +85,7 @@ namespace tv.api.Sources
 
                 return new TvData
                 {
-                    Page = currentPage,
+                    Page = page,
                     ItemsPerPage = Misc.PAGESIZE,
                     TotalItems = totalItems,
                     Items = shows
@@ -94,9 +98,9 @@ namespace tv.api.Sources
             using (WebClient client = new WebClient())
             {
                 var seriesId = QueryHelpers.ParseQuery(query).Keys.First();
-                var currentPage = int.Parse(QueryHelpers.ParseQuery(query)["page"]);
+                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
 
-                var getQuery = VKapi.ApiEpisodesForSeason(seriesId, $"sort=number&direction=asc&page={currentPage}&per_page={Misc.PAGESIZE}&with_paging=true");
+                var getQuery = VKapi.ApiEpisodesForSeason(seriesId, $"sort=number&direction=asc&page={page}&per_page={Misc.PAGESIZE}&with_paging=true");
 
                 var rawJson = client.DownloadString(getQuery);
 
@@ -112,7 +116,7 @@ namespace tv.api.Sources
 
                 return new TvData
                 {
-                    Page = currentPage,
+                    Page = page,
                     ItemsPerPage = Misc.PAGESIZE,
                     TotalItems = totalItems,
                     Items = shows
