@@ -117,35 +117,37 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                //var rawJson = client.DownloadString(Z5api.ApiShowDetails(query));
+                //var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
+                var showId = QueryHelpers.ParseQuery(query).Keys.First();
+                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
+                //var param = $"asset_subtype=episode&page={page}&page_size={Misc.PAGESIZE}";
 
-                //JObject showDetails = JObject.Parse(rawJson);
+                var rawJson = client.DownloadString(Z5api.ApiShowDetails(showId));
 
-                //var title = showDetails["title"].ToObject<string>();
-                //var seasons = showDetails["seasons"].ToArray();
+                JObject showDetails = JObject.Parse(rawJson);
 
-                //var latestSeasonId = seasons[seasons.Length - 1]["id"].ToObject<string>();
+                var title = showDetails["title"].ToObject<string>();
+                var seasons = showDetails["seasons"].ToArray();
 
+                var latestSeasonId = seasons[seasons.Length - 1]["id"].ToObject<string>();
 
                 // gwapi requires platform token
                 client.Headers.Add(GetRequestHeaders());
 
-                //var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
-                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
-                //var param = $"asset_subtype=episode&page={page}&page_size={Misc.PAGESIZE}";
-
-                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(query,page));
+                rawJson = client.DownloadString(Z5api.ApiEpisodesForSeason(latestSeasonId, page));
+                //rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(showId, page));
 
                 JObject jsonData = JObject.Parse(rawJson);
 
-                var title = jsonData["title"].ToObject<string>();
-                var showId = jsonData["id"].ToObject<string>();
+                //var title = jsonData["title"].ToObject<string>();
+                //var showId = jsonData["id"].ToObject<string>();
 
-                var shows = from item in jsonData["seasons"][0]["episodes"]
+                //var shows = from item in jsonData["seasons"][0]["episodes"]
+                var shows = from item in jsonData["episode"]
                             select new TvDataItem
                             {
                                 Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
-                                Link = string.Concat(showId, "|", item["id"].ToObject<string>(), "|", page),
+                                Link = string.Concat(latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
                                 ImgSrc = item["image_url"].ToObject<string>()
                             };
 
@@ -153,7 +155,7 @@ namespace tv.api.Sources
                 {
                     Page = 1, //jsonData["page"].ToObject<int>(),
                     ItemsPerPage = Misc.PAGESIZE, // jsonData["limit"].ToObject<int>(),
-                    TotalItems = jsonData["seasons"][0]["total_episodes"].ToObject<int>(),
+                    TotalItems = jsonData["total_episodes"].ToObject<int>(),
                     Items = shows.Take(9)
                 };
             }
@@ -174,29 +176,28 @@ namespace tv.api.Sources
                 var videoToken = JObject.Parse(client.DownloadString(Z5api.VIDEO_TOKEN))["video_token"].ToObject<string>();
 
                 var arrQuery = query.Split('|');
-                var showId = arrQuery[0];
+                var seasonId = arrQuery[0];
                 var episodeId = arrQuery[1];
-                var page = arrQuery[2];
+                var page = int.Parse(arrQuery[2]);
 
-                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(showId,page));
+                //var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(showId,page));
+                var rawJson = client.DownloadString(Z5api.ApiEpisodesForSeason(seasonId, page));
 
                 JObject jsonData = JObject.Parse(rawJson);
 
-                var episode = jsonData["seasons"][0]["episodes"].FirstOrDefault(q => q["id"].ToObject<string>() == episodeId);
+                var episode = jsonData["episode"].FirstOrDefault(q => q["id"].ToObject<string>() == episodeId);
+                //var episode = jsonData["seasons"][0]["episodes"].FirstOrDefault(q => q["id"].ToObject<string>() == episodeId);
 
-                var preview_orderid = episode["orderid"].ToObject<int>() + 1;
-                var preview = jsonData["seasons"][0]["previews"].FirstOrDefault(q => q["orderid"].ToObject<int>() == preview_orderid);
+                //var preview_orderid = episode["orderid"].ToObject<int>() + 1;
+                //var preview = jsonData["seasons"][0]["previews"].FirstOrDefault(q => q["orderid"].ToObject<int>() == preview_orderid);
 
                 var title = episode["title"].ToObject<string>();
                 var image = episode["image_url"].ToObject<string>();
 
-                //var dashUrl = episode["video_details"]["url"].ToObject<string>().Replace("drm","dash");
+
                 var episodeUrl = episode["video_details"]["hls_url"].ToObject<string>().Replace("drm", "hls");
 
-                var previewUrl = preview == null ? "NYA" : preview["video_details"]["hls_url"].ToObject<string>().Replace("drm", "hls");
-
-                //var isDrm = jsonData["is_drm"].ToObject<string>();
-                //var drmKey = jsonData["drm_key_id"].ToObject<string>();
+                //var previewUrl = preview == null ? "NYA" : preview["video_details"]["hls_url"].ToObject<string>().Replace("drm", "hls");
 
                 var playData = new TvPlayData
                 {
@@ -209,11 +210,11 @@ namespace tv.api.Sources
                             Type = "episode",
                             Link = string.Concat(Z5api.AKAMAI_URL, episodeUrl, videoToken)
                         },
-                        new StreamLink
-                        {
-                            Type = "preview",
-                            Link = previewUrl == "NYA" ? previewUrl : string.Concat(Z5api.AKAMAI_URL, previewUrl, videoToken)
-                        },
+                        //new StreamLink
+                        //{
+                        //    Type = "preview",
+                        //    Link = previewUrl == "NYA" ? previewUrl : string.Concat(Z5api.AKAMAI_URL, previewUrl, videoToken)
+                        //},
                     },
                 };
 

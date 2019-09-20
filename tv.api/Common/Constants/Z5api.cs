@@ -42,6 +42,9 @@ namespace tv.api.Common.Constants
 
         //page=1&page_size=9&asset_subtype=episode
         //public static string ApiEpisodesForSeason(string seasonId, string query) => $"https://catalogapi.zee5.com/v1/season/{seasonId}?{query}";
+
+        public static string ApiEpisodesForSeason(string seasonId, int page = 1, int limit = 9) => $"https://gwapi.zee5.com/content/tvshow/?season_id={seasonId}&type=episode&page={page}&limit={limit}";
+        
         public static string ApiEpisodesForShow(string showId, int page=1, int limit=9) => $"https://gwapi.zee5.com/content/tvshow/{showId}?translation=en&country=AU&page={page}&limit={limit}";
 
         //Not seamless but webisode - doesn't work

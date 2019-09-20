@@ -62,7 +62,7 @@ namespace tv.api.Sources
         {
             using (WebClient client = new WebClient())
             {
-                var lang = int.Parse(QueryHelpers.ParseQuery(query)["l"]);
+                var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
                 var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
                 var param = $"origin_country={lang}&page={page}";
 
