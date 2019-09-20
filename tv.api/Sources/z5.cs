@@ -132,9 +132,9 @@ namespace tv.api.Sources
 
                 //var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
                 var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
-                var param = $"asset_subtype=episode&page={page}&page_size={Misc.PAGESIZE}";
+                //var param = $"asset_subtype=episode&page={page}&page_size={Misc.PAGESIZE}";
 
-                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(param));
+                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(query,page));
 
                 JObject jsonData = JObject.Parse(rawJson);
 
@@ -145,7 +145,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
-                                Link = string.Concat(showId, "|", item["id"].ToObject<string>()),
+                                Link = string.Concat(showId, "|", item["id"].ToObject<string>(), "|", page),
                                 ImgSrc = item["image_url"].ToObject<string>()
                             };
 
@@ -176,8 +176,9 @@ namespace tv.api.Sources
                 var arrQuery = query.Split('|');
                 var showId = arrQuery[0];
                 var episodeId = arrQuery[1];
+                var page = arrQuery[2];
 
-                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(showId));
+                var rawJson = client.DownloadString(Z5api.ApiEpisodesForShow(showId,page));
 
                 JObject jsonData = JObject.Parse(rawJson);
 
