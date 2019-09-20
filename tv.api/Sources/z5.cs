@@ -100,7 +100,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = item["title"].ToObject<string>(),
-                                Link = item["id"].ToObject<string>()
+                                Link = $"e/{item["id"].ToObject<string>()}&p=1"
                             };
 
                 return new TvData
@@ -147,7 +147,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
-                                Link = string.Concat(latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
+                                Link = string.Concat("p/", latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
                                 ImgSrc = item["image_url"].ToObject<string>()
                             };
 

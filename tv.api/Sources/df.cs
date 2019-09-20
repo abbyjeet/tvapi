@@ -55,7 +55,7 @@ namespace tv.api.Sources
                                select new TvDataItem
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                   Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
+                                   Link = "s/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
@@ -142,8 +142,6 @@ namespace tv.api.Sources
 
                 var sourceUrl = source.Link;
 
-
-
                 var raw = client.DownloadString(QueryStringToFullPath(sourceUrl));
 
                 var document = _parser.ParseDocument(raw);
@@ -154,7 +152,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
+                                Link = "e/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                             };
 
                 var count = shows.Count();
@@ -190,7 +188,7 @@ namespace tv.api.Sources
                                select new TvDataItem
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                   Link = LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
+                                   Link = "p/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
