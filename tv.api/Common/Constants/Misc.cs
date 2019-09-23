@@ -8,11 +8,17 @@ namespace tv.api.Common.Constants
 {
     public static class Misc
     {
-        public static List<TvDataItem> Sources = new List<TvDataItem>
+        public static TvData Sources = new TvData
         {
-            new TvDataItem { Name = "DesiTvFlix",Link="df", ImgSrc = "" },
-            new TvDataItem { Name = "Zee5",Link="z5", ImgSrc = "" },
-            new TvDataItem { Name = "Viki",Link="vk", ImgSrc = "" },
+            ItemsPerPage = 0,
+            Page = 0,
+            TotalItems = 0,
+            Items = new List<TvDataItem>
+            {
+                new TvDataItem { Name = "DesiTvFlix",Link="df", ImgSrc = "" },
+                new TvDataItem { Name = "Zee5",Link="z5", ImgSrc = "" },
+                new TvDataItem { Name = "Viki",Link="vk", ImgSrc = "" },
+            }
         };
 
         public const int PAGESIZE = 9;
