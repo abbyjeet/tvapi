@@ -55,7 +55,7 @@ namespace tv.api.Sources
                                select new TvDataItem
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                   Link = "s/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
+                                   Link = "df/s/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
@@ -152,7 +152,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                Link = "e/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
+                                Link = "df/e/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                             };
 
                 var count = shows.Count();
@@ -188,7 +188,7 @@ namespace tv.api.Sources
                                select new TvDataItem
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
-                                   Link = "p/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
+                                   Link = "df/p/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 

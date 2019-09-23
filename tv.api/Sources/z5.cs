@@ -57,19 +57,19 @@ namespace tv.api.Sources
                 {
                     Name ="Marathi",
                     ImgSrc="mr",
-                    Link = "s/l=mr&p=1"
+                    Link = "z5/s/l=mr&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Hindi",
                     ImgSrc="hi",
-                    Link = "s/l=hi&p=1"
+                    Link = "z5/s/l=hi&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="English",
                     ImgSrc="en",
-                    Link = "s/l=en&p=1"
+                    Link = "z5/s/l=en&p=1"
                 }
             };
 
@@ -100,7 +100,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = item["title"].ToObject<string>(),
-                                Link = $"e/{item["id"].ToObject<string>()}&p=1"
+                                Link = $"z5/e/{item["id"].ToObject<string>()}&p=1"
                             };
 
                 return new TvData
@@ -147,7 +147,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
-                                Link = string.Concat("p/", latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
+                                Link = string.Concat("z5/p/", latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
                                 ImgSrc = item["image_url"].ToObject<string>()
                             };
 

@@ -20,32 +20,32 @@ namespace tv.api.Sources
                 {
                     Name ="Korean",
                     ImgSrc = "kr",
-                    Link="s/l=kr&p=1"
+                    Link="vk/s/l=kr&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Japanese",
                     ImgSrc = "jp",
-                    Link="s/l=jp&p=1"
+                    Link="vk/s/l=jp&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Chinese",
                     ImgSrc = "cn",
-                    Link="s/l=cn&p=1"
+                    Link="vk/s/l=cn&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Taiwan",
                     ImgSrc = "tw",
-                    Link="s/l=tw&p=1"
+                    Link="vk/s/l=tw&p=1"
                 }
                 ,
                 new TvDataItem
                 {
                     Name ="India",
                     ImgSrc = "in",
-                    Link="s/l=in&p=1"
+                    Link="vk/s/l=in&p=1"
                 }
             };
 
@@ -80,7 +80,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = item["titles"]["en"].ToObject<string>(),
-                                Link = $"e/{item["id"].ToObject<string>()}&p=1"
+                                Link = $"vk/e/{item["id"].ToObject<string>()}&p=1"
                             };
 
                 return new TvData
@@ -111,7 +111,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = "Episode " + item["number"].ToObject<string>(),
-                                Link = "p/" + item["id"].ToObject<string>()
+                                Link = "vk/p/" + item["id"].ToObject<string>()
                             };
 
                 return new TvData
