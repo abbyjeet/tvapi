@@ -153,7 +153,7 @@ namespace tv.api.Sources
 
                 return new TvData
                 {
-                    Page = 1, //jsonData["page"].ToObject<int>(),
+                    Page = jsonData["page"].ToObject<int>(),
                     ItemsPerPage = Misc.PAGESIZE, // jsonData["limit"].ToObject<int>(),
                     TotalItems = jsonData["total_episodes"].ToObject<int>(),
                     Items = shows.Take(9)
