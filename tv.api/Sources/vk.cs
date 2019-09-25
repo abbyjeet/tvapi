@@ -19,32 +19,32 @@ namespace tv.api.Sources
                 new TvDataItem
                 {
                     Name ="Korean",
-                    ImgSrc = "kr",
+                    ImgSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/320px-Flag_of_South_Korea.svg.png",
                     Link="vk/s/l=kr&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Japanese",
-                    ImgSrc = "jp",
+                    ImgSrc = "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/320px-Flag_of_Japan.svg.png",
                     Link="vk/s/l=jp&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Chinese",
-                    ImgSrc = "cn",
+                    ImgSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/320px-Flag_of_the_People%27s_Republic_of_China.svg.png",
                     Link="vk/s/l=cn&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Taiwan",
-                    ImgSrc = "tw",
+                    ImgSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/320px-Flag_of_the_Republic_of_China.svg.png",
                     Link="vk/s/l=tw&p=1"
                 }
                 ,
                 new TvDataItem
                 {
                     Name ="India",
-                    ImgSrc = "in",
+                    ImgSrc = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/320px-Flag_of_India.svg.png",
                     Link="vk/s/l=in&p=1"
                 }
             };

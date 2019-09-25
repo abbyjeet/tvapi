@@ -56,19 +56,19 @@ namespace tv.api.Sources
                 new TvDataItem
                 {
                     Name ="Marathi",
-                    ImgSrc="mr",
+                    ImgSrc="",
                     Link = "z5/s/l=mr&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="Hindi",
-                    ImgSrc="hi",
+                    ImgSrc="",
                     Link = "z5/s/l=hi&p=1"
                 },
                 new TvDataItem
                 {
                     Name ="English",
-                    ImgSrc="en",
+                    ImgSrc="",
                     Link = "z5/s/l=en&p=1"
                 }
             };
