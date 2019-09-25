@@ -189,7 +189,7 @@ namespace tv.api.Sources
                                {
                                    Name = (node.FirstElementChild as IHtmlAnchorElement).Title,
                                    Link = "df/p/" + LinkToQueryString((node.FirstElementChild as IHtmlAnchorElement)),
-                                   ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
+                                   ImgSrc = (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", "")
                                };
 
                 var count = episodes.Count();
