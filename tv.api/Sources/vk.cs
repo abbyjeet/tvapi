@@ -80,6 +80,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = item["titles"]["en"].ToObject<string>(),
+                                ImgSrc = item["images"]["poster"]["url"].ToObject<string>(),
                                 Link = $"vk/e/{item["id"].ToObject<string>()}&p=1"
                             };
 
@@ -111,6 +112,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 Name = "Episode " + item["number"].ToObject<string>(),
+                                ImgSrc = item["images"]["poster"]["url"].ToObject<string>(),
                                 Link = "vk/p/" + item["id"].ToObject<string>()
                             };
 
