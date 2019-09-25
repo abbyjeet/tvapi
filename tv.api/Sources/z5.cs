@@ -93,14 +93,18 @@ namespace tv.api.Sources
                 var param = $"asset_subtype=tvshow&languages={lang}&page={page}&page_size={Misc.PAGESIZE}";
 
                 var rawJson = client.DownloadString(Z5api.ApiListShows(param));
-                
+
+                string imgUrl(string id, string listImage) => $"https://akamaividz1.zee5.com/resources/{id}/list/1170x658/{listImage}";
+
+
                 JObject jsonData = JObject.Parse(rawJson);
 
                 var shows = from item in jsonData["items"]
                             select new TvDataItem
                             {
                                 Name = item["title"].ToObject<string>(),
-                                Link = $"z5/e/{item["id"].ToObject<string>()}&p=1"
+                                Link = $"z5/e/{item["id"].ToObject<string>()}&p=1",
+                                ImgSrc = imgUrl(item["id"].ToObject<string>(), item["list_image"].ToObject<string>())
                             };
 
                 return new TvData
