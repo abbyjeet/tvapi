@@ -207,7 +207,7 @@ namespace tv.api.Sources
                 var playData = new TvPlayData
                 {
                     Name = title,
-                    ImgSrc = image,
+                    ImgSrc = "",
                     Links = new List<StreamLink>
                     {
                         new StreamLink
