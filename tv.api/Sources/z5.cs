@@ -212,7 +212,7 @@ namespace tv.api.Sources
                     {
                         new StreamLink
                         {
-                            Type = "episode",
+                            Type = "application/x-mpegURL",
                             Link = string.Concat(Z5api.AKAMAI_URL, episodeUrl, videoToken)
                         },
                         //new StreamLink
