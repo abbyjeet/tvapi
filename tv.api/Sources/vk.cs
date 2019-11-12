@@ -144,11 +144,6 @@ namespace tv.api.Sources
                     {
                         new StreamLink
                         {
-                            Type = "application/dash+xml",
-                            Link = jsonData["streams"]["mpd"]["http"]["url"].ToObject<string>()
-                        },
-                        new StreamLink
-                        {
                             Type = "application/x-mpegURL",
                             Link = jsonData["streams"]["480p"]["https"]["url"].ToObject<string>()
                         },                        
@@ -161,6 +156,11 @@ namespace tv.api.Sources
                         {
                             Type = "application/x-mpegURL",
                             Link = jsonData["streams"]["240p"]["https"]["url"].ToObject<string>()
+                        },
+                        new StreamLink
+                        {
+                            Type = "application/dash+xml",
+                            Link = jsonData["streams"]["mpd"]["http"]["url"].ToObject<string>()
                         }
                     },
                 };
