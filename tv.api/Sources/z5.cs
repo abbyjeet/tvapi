@@ -104,7 +104,7 @@ namespace tv.api.Sources
                             {
                                 Name = item["title"].ToObject<string>(),
                                 Link = $"z5/e/{item["id"].ToObject<string>()}&p=1",
-                                ImgSrc = imgUrl(item["id"].ToObject<string>(), item["list_image"].ToObject<string>())
+                                ImgSrc = imgUrl(item["id"].ToObject<string>(), item["list_image"]?.ToObject<string>())
                             };
 
                 return new TvData
@@ -151,9 +151,9 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 //Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
-                                Name = $"Ep {item["episode_number"].ToObject<string>()} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")}",
+                                Name = $"Ep {item["episode_number"]?.ToObject<string>()} - {item["release_date"]?.ToObject<DateTime>()?.ToString("yyyy MMM dd")}",
                                 Link = string.Concat("z5/p/", latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
-                                ImgSrc = item["image_url"].ToObject<string>()
+                                ImgSrc = item["image_url"]?.ToObject<string>()
                             };
 
                 return new TvData
@@ -197,7 +197,7 @@ namespace tv.api.Sources
                 //var preview = jsonData["seasons"][0]["previews"].FirstOrDefault(q => q["orderid"].ToObject<int>() == preview_orderid);
 
                 var title = episode["title"].ToObject<string>();
-                var image = episode["image_url"].ToObject<string>();
+                var image = episode["image_url"]?.ToObject<string>();
 
 
                 var episodeUrl = episode["video_details"]["hls_url"].ToObject<string>().Replace("drm", "hls");
