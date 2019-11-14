@@ -94,7 +94,7 @@ namespace tv.api.Sources
 
                 var rawJson = client.DownloadString(Z5api.ApiListShows(param));
 
-                string imgUrl(string id, string listImage) => $"https://akamaividz1.zee5.com/resources/{id}/list/1170x658/{listImage}";
+                string imgUrl(string id, string listImage) => string.IsNullOrWhiteSpace(listImage) ? "" : $"https://akamaividz1.zee5.com/resources/{id}/list/1170x658/{listImage}";
 
 
                 JObject jsonData = JObject.Parse(rawJson);
