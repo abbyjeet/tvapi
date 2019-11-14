@@ -151,7 +151,7 @@ namespace tv.api.Sources
                             select new TvDataItem
                             {
                                 //Name = $"{title} - {item["release_date"].ToObject<DateTime>().ToString("yyyy MMM dd")} - Ep {item["episode_number"].ToObject<string>()}",
-                                Name = $"Ep {item["episode_number"]?.ToObject<string>()} - {item["release_date"]?.ToObject<DateTime>()?.ToString("yyyy MMM dd")}",
+                                Name = $"Ep {item["episode_number"]?.ToObject<string>()} - {item["release_date"]?.ToObject<DateTime>().ToString("yyyy MMM dd")}",
                                 Link = string.Concat("z5/p/", latestSeasonId, "|", item["id"].ToObject<string>(), "|", page),
                                 ImgSrc = item["image_url"]?.ToObject<string>()
                             };
