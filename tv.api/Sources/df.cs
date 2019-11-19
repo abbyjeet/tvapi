@@ -135,7 +135,17 @@ namespace tv.api.Sources
 
                         if (source == null)
                         {
-                            source = sources.FirstOrDefault();
+                            source = sources.FirstOrDefault(s => s.Name.Contains("Source ("));
+
+                            if (source == null)
+                            {
+                                source = sources.FirstOrDefault(s => s.Link.Contains("tShows.php"));
+
+                                if (source == null)
+                                {
+                                    source = sources.FirstOrDefault();
+                                }
+                            }
                         }
                     }
                 }
