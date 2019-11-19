@@ -38,6 +38,9 @@ namespace tv.api.Common.Constants
 
         //asset_subtype=tvshow&languages=mr&page=1&page_size=9
         public static string ApiListShows(string query) => $"https://catalogapi.zee5.com/v1/tvshow?sort_by_field=release_date&sort_order=DESC&genres=Action,Animation,Comedy,Cookery,Crime,Devotional,Docudrama,Drama,Entertainment,Fantasy,Horror,Infotainment,Kids,Lifestyle,Mystery,News,Reality,Romance,Sci-Fi%20%26%20Fantasy,Thriller,Wellness&country=AU&translation=en&{query}";
+
+        public static string ApiListMovies(string query) => $"https://catalogapi.zee5.com/v1/movie?asset_subtype=movie&sort_by_field=release_date&sort_order=DESC&genres=Action,Awards,Animation,Crime,Fantasy,Horror,Music,Mystery,Patriotic,Thriller,Romance,Devotional,Entertainment,News,Drama,Sports,Docudrama,Cookery,Comedy&languages=mr&country=AU&translation=en&{query}";
+
         public static string ApiShowDetails(string showId) => $"https://catalogapi.zee5.com/v1/tvshow/{showId}";
 
         //page=1&page_size=9&asset_subtype=episode

@@ -70,6 +70,24 @@ namespace tv.api.Sources
                     Name ="English",
                     ImgSrc="",
                     Link = "z5/s/l=en&p=1"
+                },
+                new TvDataItem
+                {
+                    Name ="Marathi Movies",
+                    ImgSrc="",
+                    Link = "z5/s/l=mr&p=1&t=m"
+                },
+                new TvDataItem
+                {
+                    Name ="Hindi Movies",
+                    ImgSrc="",
+                    Link = "z5/s/l=hi&p=1&t=m"
+                },
+                new TvDataItem
+                {
+                    Name ="English Movies",
+                    ImgSrc="",
+                    Link = "z5/s/l=en&p=1&t=m"
                 }
             };
 
@@ -87,12 +105,25 @@ namespace tv.api.Sources
             using (WebClient client = new WebClient())
             {
                 //client.Headers.Add(GetRequestHeaders());
+                               
 
                 var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
                 var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
-                var param = $"asset_subtype=tvshow&languages={lang}&page={page}&page_size={Misc.PAGESIZE}";
+                var param = "";
+                var rawJson = "";
 
-                var rawJson = client.DownloadString(Z5api.ApiListShows(param));
+
+                if (query.IndexOf("&t=m") > -1)
+                {
+                    param = $"asset_subtype=movie&languages={lang}&page={page}&page_size={Misc.PAGESIZE}";
+                    rawJson = client.DownloadString(Z5api.ApiListMovies(param));
+                }
+                else
+                {
+                    param = $"asset_subtype=tvshow&languages={lang}&page={page}&page_size={Misc.PAGESIZE}";
+                    rawJson = client.DownloadString(Z5api.ApiListShows(param));
+
+                }
 
                 string imgUrl(string id, string listImage) => string.IsNullOrWhiteSpace(listImage) ? "" : $"https://akamaividz1.zee5.com/resources/{id}/list/1170x658/{listImage}";
 
