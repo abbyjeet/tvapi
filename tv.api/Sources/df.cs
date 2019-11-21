@@ -41,7 +41,7 @@ namespace tv.api.Sources
             _parser = parser;
         }
 
-        public TvData GetChannels(string query = "p=1")
+        public TvData GetChannels(string query = "")
         {
             using (WebClient client = new WebClient())
             {

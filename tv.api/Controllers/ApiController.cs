@@ -35,7 +35,7 @@ namespace tv.api.Controllers
         /// <param name="encurl">optional - nothing by default</param>
         /// <returns></returns>
         [HttpGet("{src}/{encurl?}")]
-        public JsonResult GetChannels(string src, string encurl = "")
+        public JsonResult GetChannels(string src, string encurl = "p=1")
         {
             return new JsonResult(source(src).GetChannels(HttpUtility.UrlDecode(encurl)));
         }
