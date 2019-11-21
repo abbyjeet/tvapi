@@ -41,7 +41,7 @@ namespace tv.api.Sources
             _parser = parser;
         }
 
-        public TvData GetChannels(string query)
+        public TvData GetChannels(string query = "p=1")
         {
             using (WebClient client = new WebClient())
             {
@@ -59,14 +59,18 @@ namespace tv.api.Sources
                                    ImgSrc = string.Concat(URL.DF, (node.FirstElementChild.FirstElementChild as IHtmlImageElement).Source.Replace("about:///", ""))
                                };
 
-                var count = channels.Count();
+                var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
+
+                var takeChannels = channels.Reverse().Skip(Misc.PAGESIZE * (page - 1)).Take(Misc.PAGESIZE);
+
+                var count = channels.Count();                
 
                 var tvData = new TvData
                 {
-                    Page = 1,
-                    ItemsPerPage = count,
+                    Page = page,
+                    ItemsPerPage = Misc.PAGESIZE,
                     TotalItems = count,
-                    Items = channels
+                    Items = takeChannels
                 };
 
                 return tvData;
