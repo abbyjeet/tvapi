@@ -161,6 +161,8 @@ namespace tv.api.Sources
                     // gwapi requires platform token
                     client.Headers.Add(GetRequestHeaders());
 
+                    string imgUrl(string id, string listImage) => string.IsNullOrWhiteSpace(listImage) ? "" : $"https://akamaividz1.zee5.com/resources/{id}/list/1170x658/{listImage}";
+
                     return new TvData
                     {
                         Page = 1,
@@ -170,7 +172,7 @@ namespace tv.api.Sources
                             {
                                 Name = title,
                                 Link = $"z5/p/m|{showId}|1",
-                                ImgSrc = showDetails["list_image"]?.ToObject<string>()
+                                ImgSrc = imgUrl(showId, showDetails["list_image"]?.ToObject<string>())
                             }
                         }
                     };
