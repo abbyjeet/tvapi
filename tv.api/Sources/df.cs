@@ -192,8 +192,8 @@ namespace tv.api.Sources
 
                 var document = _parser.ParseDocument(raw);
 
-                var list = document.QuerySelectorAll("#blogtile-left #portfolio .tile");
-
+                var list = document.QuerySelectorAll("#blogtile-left #portfolio .tile").ToList();
+                list.Reverse();
                 var episodes = from node in list
                                select new TvDataItem
                                {
