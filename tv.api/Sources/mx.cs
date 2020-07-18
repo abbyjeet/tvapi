@@ -1,144 +1,185 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
+﻿using AngleSharp;
+using AngleSharp.Html.Parser;
+using AngleSharp.Js;
+using AngleSharp.Scripting;
+using Jint.Native.Json;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using tv.api.Common.Constants;
 using tv.api.Common.Models;
 
 namespace tv.api.Sources
 {
-    public class Z5 : ISource
+    public class MX : ISource
     {
-        private readonly string collectionId;
 
-        public Z5()
+        private readonly IHtmlParser _parser;
+
+        public MX(IHtmlParser parser)
         {
-            using (WebClient client = new WebClient())
-            {
-                var rawJson = client.DownloadString(Z5api.REGIONAL_DETAILS);
-
-                dynamic jsonData = JArray.Parse(rawJson);
-
-                collectionId = jsonData[0].collections.web_app.tvshows;
-            }
+            _parser = parser;
         }
 
         private NameValueCollection GetRequestHeaders()
         {
-            using (WebClient client = new WebClient())
-            {
-                var rawJson = client.DownloadString(Z5api.PLATFORM_TOKEN);
-                JObject jsonData = JObject.Parse(rawJson);
-                var xAccessToken = jsonData["token"].ToObject<string>();
+            //using (WebClient client = new WebClient())
+            //{
+                //var rawJson = client.DownloadString(Z5api.PLATFORM_TOKEN);
+                //JObject jsonData = JObject.Parse(rawJson);
+                //var xAccessToken = jsonData["token"].ToObject<string>();
 
                 return new NameValueCollection
                 {
                     //{ "Origin", "https://www.zee5.com" },
                     { "User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.80 Safari/537.36" },
                     //{ "Accept", "*/*" },
-                    { "Referer", "https://www.zee5.com" },
+                    { "Referer", "https://www.mxplayer.in/" },
                     //{ "Accept-Encoding", "gzip, deflate, br" },
                     //{ "Accept-Language", "en-US,en;q=0.9" },
                     { "Accept", "application/json, text/plain, */*" },
                     //{ "Accept-Language", "en-US,en;q=0.9" },
-                    { "X-ACCESS-TOKEN", xAccessToken }
+                    //{ "X-ACCESS-TOKEN", xAccessToken }
+                    { "ETag", "e6c486f793039c8299886cfcc943872c" },
+                    { "Server", "AmazonS3" },
+                    { "X-Amz-Cf-Id", "IDsM0D5mTKMqip290NYYsFjkUXDHvg7o93lucYuBhPW2R6yUUJ38xw==" },
+                    { "x-amz-version-id", "QAh42F5_lCNbCTHV3fVwqn.Afjm1yWdd" }
                 };
-            }
+            //}
         }
+
+
+        //using (WebClient client = new WebClient())
+        //{
+        //    var raw = client.DownloadString(URL.MX);
+        //    var jsValue = new JArray();
+        //    var jsonRaw = "";
+
+        //    var pattern = "\"tabIdsArr\":\\[(\\{\"id\":\".+\",\"name\":\".+\"\\})+\\],\"isBot";
+
+        //    Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+
+        //    Match m = r.Match(raw);
+
+        //    if (m.Success && m.Groups.Count == 2)
+        //    {
+        //        jsonRaw = $"[{m.Groups[1].Value.Replace("\"", "'")}]";
+        //        jsValue = JArray.Parse(jsonRaw);
+        //    }
+
+        //    var channels = from item in jsValue
+        //                   select new TvDataItem
+        //                   {
+        //                       Name = item["name"].ToObject<string>(),
+        //                       Link = item["id"].ToObject<string>(),
+        //                   };
+
+        //    return new TvData
+        //    {
+        //        Page = 1,
+        //        ItemsPerPage = 1,
+        //        TotalItems = 1,
+        //        Items = channels
+        //    };
+
+        //}
+
+
+        //Get all videos types
+        //1 = movie
+        //2 = tvshow
+        //3 = music
+        //4 = shorts
+
+        //https://api.mxplay.com/v1/web/detail/browseItem?&pageSize=9&isCustomized=true&pageNum=0&type=1&userid=aef3d23f-6684-484f-8428-365b4959b728&platform=com.mxplay.desktop&content-languages=mr
+
+        //shorten
+        //https://api.mxplay.com/v1/web/detail/browseItem/?&pageSize=9&isCustomized=true&pageNum=1&type=1&platform=com.mxplay.desktop
 
         public TvData GetChannels(string query = "")
         {
-            var shows = new TvDataItem[] {
+            var channels = new TvDataItem[] {
                 new TvDataItem
                 {
-                    Name ="Marathi",
+                    Name ="Movies",
                     ImgSrc="",
-                    Link = "z5/s/l=mr&p=1"
+                    Link = "mx/s/t=1&p=1"
                 },
                 new TvDataItem
                 {
-                    Name ="Hindi",
+                    Name ="Tv Shows",
                     ImgSrc="",
-                    Link = "z5/s/l=hi&p=1"
+                    Link = "mx/s/t=2&p=1"
                 },
                 new TvDataItem
                 {
-                    Name ="English",
+                    Name ="Music",
                     ImgSrc="",
-                    Link = "z5/s/l=en&p=1"
+                    Link = "mx/s/t=3&p=1"
                 },
                 new TvDataItem
                 {
-                    Name ="Marathi Movies",
+                    Name ="Shorts",
                     ImgSrc="",
-                    Link = "z5/s/l=mr&p=1&t=m"
-                },
-                new TvDataItem
-                {
-                    Name ="Hindi Movies",
-                    ImgSrc="",
-                    Link = "z5/s/l=hi&p=1&t=m"
-                },
-                new TvDataItem
-                {
-                    Name ="English Movies",
-                    ImgSrc="",
-                    Link = "z5/s/l=en&p=1&t=m"
+                    Link = "mx/s/t=4&p=1"
                 }
             };
 
             return new TvData
             {
                 Page = 1,
-                ItemsPerPage = 1,
-                TotalItems = 1,
-                Items = shows
+                ItemsPerPage = 9,
+                TotalItems = 4,
+                Items = channels
             };
         }
 
-        public TvData GetShows(string query = "l=mr&p=1")
+        public TvData GetShows(string query = "t=1&p=1")
         {
             using (WebClient client = new WebClient())
             {
-                //client.Headers.Add(GetRequestHeaders());
-                //var test = client.DownloadString("https://gwapi.zee5.com/content/collection/0-8-786?page=1&limit=5&item_limit=20&translation=en&languages=mr");
-
-
-                var lang = QueryHelpers.ParseQuery(query)["l"].ToString();
+                var type = int.Parse(QueryHelpers.ParseQuery(query)["t"]);
                 var page = int.Parse(QueryHelpers.ParseQuery(query)["p"]);
-                var ifMovie = query.IndexOf("&t=m") > -1;
-                var type = ifMovie ? "movie" : "tvshow";
-                var param = $"languages={lang}&page={page}&page_size={Misc.PAGESIZE}";
-                var rawJson = client.DownloadString(Z5api.ApiList(param, type));
-
-                //https://is-1.mxplay.com/media/images/b0122f955d7c92b44903a17a575c18e7/16x9/1x/test_pic1574426294884.jpg
-                //media/images/b0122f955d7c92b44903a17a575c18e7/test_pic1574426294884.jpg
-
-                string imgUrl(string id, string listImage) => string.IsNullOrWhiteSpace(listImage) ? "" : $"https://akamaividz1.zee5.com/resources/{id}/list/1170x658/{listImage}";
+                var rawJson = client.DownloadString(MXapi.ApiList(type,page));
 
                 JObject jsonData = JObject.Parse(rawJson);
+
+                //https://is-1.mxplay.com/media/images/a6d403f3dadad011494931095c818466/16x9/9x/test_pic1573716634548.jpg
+
+                ///media/images/b0122f955d7c92b44903a17a575c18e7/test_pic1574426294884.jpg
+
+                string imgUrl(string id, string listImage) => string.IsNullOrWhiteSpace(listImage) ? "" : $"https://is-1.mxplay.com{(listImage.Replace(id,$"{id}/16x9/9x"))}";
+
+                //where !(item["genres"] as JArray).Any(c => c.ToString() == "Erotic")
 
                 var shows = from item in jsonData["items"]
                             select new TvDataItem
                             {
                                 Name = item["title"].ToObject<string>(),
-                                Link = $"z5/e/{item["id"].ToObject<string>()}&p=1{(ifMovie ? "&t=m" : "")}",
-                                ImgSrc = imgUrl(item["id"].ToObject<string>(), item["list_image"]?.ToObject<string>())
+                                Link = $"mx/e/{item["id"].ToObject<string>()}&p=1&t=1",
+                                ImgSrc = imgUrl(item["id"].ToObject<string>(), item["image"]["16x9"]?.ToObject<string>())
                             };
 
                 return new TvData
                 {
-                    Page = jsonData["page"].ToObject<int>(),
-                    ItemsPerPage = jsonData["page_size"].ToObject<int>(),
-                    TotalItems = jsonData["total"].ToObject<int>(),
+                    Page = page,
+                    ItemsPerPage = 9,
+                    TotalItems = jsonData["totalCount"].ToObject<int>(),
                     Items = shows
-                };
+                };                
             }
         }
+
+
+        //https://api.mxplay.com/v1/web/detail/collection?type=tvshow&id=e376b18ab176ce47ee576c904882ecb3&platform=com.mxplay.desktop
+
+        //https://api.mxplay.com/v1/web/detail/tab/tvshowepisodes?type=season&id=086984a961f38bfee323cc83ac11252a&userid=e0c96965-b729-4d73-a1f4-2278a918852b&platform=com.mxplay.desktop&content-languages=mr
 
         public TvData GetEpisodes(string query = "p=1")
         {
@@ -245,7 +286,7 @@ namespace tv.api.Sources
                     var rawJson = client.DownloadString(Z5api.ApiShowDetails(episodeId, "movie"));
 
                     JObject showDetails = JObject.Parse(rawJson);
-                                       
+
                     var videoUrl = showDetails["video"]["hls_url"].ToObject<string>().Replace("drm", "hls");
 
                     playData.Name = showDetails["title"].ToObject<string>();

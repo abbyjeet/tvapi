@@ -15,9 +15,10 @@ namespace tv.api.Common.Constants
             TotalItems = 3,
             Items = new List<TvDataItem>
             {
-                new TvDataItem { Name = "DesiTvFlix",Link="df/&p=1", ImgSrc = "http://desitvflix.site/images/namelogo.png" },
+                new TvDataItem { Name = "DesiTvFlix",Link="df/&p=1", ImgSrc = "http://desitvflix.com/images/namelogo.png" },
                 new TvDataItem { Name = "Zee5",Link="z5", ImgSrc = "https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/Zee5-official-logo.jpeg/600px-Zee5-official-logo.jpeg" },
                 new TvDataItem { Name = "Viki",Link="vk", ImgSrc = "https://images-eu.ssl-images-amazon.com/images/I/41fLQDXrS3L.png" },
+                //new TvDataItem { Name = "MXPlayer",Link="mx", ImgSrc = "https://j2apps.s.llnwi.net/assets-origin/static/images/logo_main_v1.png" },
             }
         };
 
